@@ -34,3 +34,9 @@ dist-ssr
 
 #Dependencies Installed
 node_modules
+public
+assets
+
+
+
+*.png

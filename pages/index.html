@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Quantity Measurement</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ================= AUTH ================= -->
+  <div id="authSection" class="auth-wrapper">
+    <div class="auth-box">
+
+      <!-- LEFT -->
+      <div class="auth-left">
+        <img src="/logo3.png" class="auth-logo" alt="Logo">
+        <h1>Quantity<span>Measurement</span></h1>
+        <p>Professional Measurement Tool</p>
+      </div>
+
+      <!-- RIGHT -->
+      <div class="auth-right">
+
+        <!-- Toggle -->
+        <div class="toggle-switch">
+          <div id="toggleSlider" class="toggle-slider login"></div>
+          <button id="loginBtn">Login</button>
+          <button id="signupBtn">Sign Up</button>
+        </div>
+
+        <!-- Form -->
+        <form id="authForm" class="auth-form">
+          <input id="nameField" name="name" placeholder="Full Name">
+          <input name="email" type="email" placeholder="Email Address" required>
+          <input name="password" type="password" placeholder="Password" required>
+          <button type="submit" class="submit-btn">Sign In</button>
+        </form>
+
+        <!-- Divider -->
+        <div class="divider">
+          <span>or continue with</span>
+        </div>
+
+        <!-- Social -->
+        <div class="socials">
+          <button id="googleLogin" class="social-btn google">Google</button>
+          <button id="githubLogin" class="social-btn github">GitHub</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= DASHBOARD ================= -->
+  <div id="dashboardSection" class="dashboard" style="display:none;">
+
+    <!-- Header -->
+    <header>
+      <div class="header-left">
+        <h2 id="pageTitle">Unit Converter</h2>
+      </div>
+
+      <div class="header-actions">
+        <button id="activityBtn" class="nav-btn">
+          <span class="icon">📊</span>
+          <span class="label">Activity</span>
+        </button>
+
+        <button id="logoutBtn" class="logout-btn">
+          Sign Out
+        </button>
+      </div>
+    </header>
+
+    <!-- ================= CONVERTER ================= -->
+    <div id="converterPage">
+
+      <div class="controls">
+
+        <div class="section-title">Measurement Type</div>
+        <div class="types">
+          <button data-type="LengthUnit" class="active">📏 Length</button>
+          <button data-type="WeightUnit">⚖️ Weight</button>
+          <button data-type="TemperatureUnit">🌡️ Temperature</button>
+          <button data-type="VolumeUnit">🧪 Volume</button>
+        </div>
+
+        <div class="section-title">Operation</div>
+        <div class="actions">
+          <button data-action="compare" class="active">Compare</button>
+          <button data-action="convert">Convert</button>
+          <button data-action="arithmetic">Arithmetic</button>
+        </div>
+
+        <div id="arithBox" class="arithmetic-select" style="display:none;">
+          <label>Select Operation:</label>
+          <select id="arithOperation">
+            <option value="add">Add (+)</option>
+            <option value="subtract">Subtract (−)</option>
+            <option value="divide">Divide (÷)</option>
+          </select>
+        </div>
+
+      </div>
+
+      <!-- Converter -->
+      <div class="converter">
+
+        <div class="input-group">
+          <label>First Value</label>
+          <div class="card">
+            <input id="val1" type="number" placeholder="0">
+            <select id="unit1"></select>
+          </div>
+        </div>
+
+        <button id="calculateBtn" class="equals">=</button>
+
+        <div class="input-group">
+          <label>Second Value</label>
+          <div class="card">
+            <input id="val2" type="number" placeholder="0">
+            <select id="unit2"></select>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Result -->
+      <div class="result">
+        <span class="result-label">Result</span>
+        <h1 id="result" class="result-value">0</h1>
+      </div>
+
+    </div>
+
+    <!-- ================= PROFILE ================= -->
+    <div id="profilePage" class="profile" style="display:none;">
+
+      <div class="stats-section">
+        <h3>Operation Statistics</h3>
+        <div id="statsContainer" class="stats"></div>
+      </div>
+
+      <div class="history-section">
+        <h3>Recent Activity</h3>
+
+        <div class="history-controls">
+          <label>Filter by Operation:</label>
+          <select id="historyFilter">
+            <option value="compare">Compare</option>
+            <option value="convert">Convert</option>
+            <option value="add">Add</option>
+            <option value="subtract">Subtract</option>
+            <option value="divide">Divide</option>
+          </select>
+        </div>
+
+        <div id="historyContainer" class="history-list"></div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

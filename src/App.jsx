@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
@@ -21,6 +22,14 @@ function App() {
   const [history, setHistory] = useState([]);
   const [counts, setCounts] = useState({});
 
+  const units = {
+    LengthUnit: ['INCHES', 'FEET', 'YARDS', 'CENTIMETERS'],
+    WeightUnit: ['GRAM', 'KILOGRAM', 'POUND'],
+    VolumeUnit: ['MILLILITRE', 'LITRE', 'GALLON'],
+    TemperatureUnit: ['CELSIUS', 'FAHRENHEIT', 'KELVIN']
+  };
+
+  // Authentication effect
   useEffect(() => {
     const token = new URLSearchParams(window.location.search).get('token');
 
@@ -32,6 +41,14 @@ function App() {
       setIsLoggedIn(true);
     }
   }, []);
+
+  // Reset units when measurement type changes
+  useEffect(() => {
+    const firstUnit = units[measureType][0];
+    const secondUnit = units[measureType][1] || units[measureType][0];
+    setUnit1(firstUnit);
+    setUnit2(secondUnit);
+  }, [measureType]);
 
   const handleAuth = async (e) => {
     e.preventDefault();
@@ -64,18 +81,52 @@ function App() {
     const endpoint = mainAction === 'arithmetic' ? arithOperation : mainAction;
 
     try {
+      // Validate inputs
+      if (!val1 || !val2) {
+        setResult("Enter values");
+        return;
+      }
+
+      if (!unit1 || !unit2) {
+        setResult("Select units");
+        return;
+      }
+
+      const payload = {
+        thisQuantityDTO: { 
+          value: parseFloat(val1), 
+          unit: unit1, 
+          measurementType: measureType 
+        },
+        thatQuantityDTO: { 
+          value: parseFloat(val2), 
+          unit: unit2, 
+          measurementType: measureType 
+        }
+      };
+
+      console.log('Request payload:', payload);
+      console.log('Endpoint:', endpoint);
+
       const res = await axios.post(
         `http://localhost:8080/api/v1/quantities/${endpoint}`,
-        {
-          thisQuantityDTO: { value: +val1, unit: unit1, measurementType: measureType },
-          thatQuantityDTO: { value: +val2, unit: unit2, measurementType: measureType }
-        },
-        { headers: { Authorization: `Bearer ${token}` } }
+        payload,
+        { 
+          headers: { 
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          } 
+        }
       );
 
-      setResult(res.data.resultString || res.data.resultValue || "0");
-    } catch {
-      setResult("Error");
+      console.log('Response:', res.data);
+
+      const resultValue = res.data.resultString || res.data.resultValue || res.data.result || "0";
+      setResult(String(resultValue));
+    } catch (error) {
+      console.error('Error details:', error.response?.data || error.message);
+      const errorMsg = error.response?.data?.message || error.response?.data?.error || "Error in calculation";
+      setResult(errorMsg);
     }
   };
 
@@ -111,13 +162,6 @@ function App() {
     }
   };
 
-  const units = {
-    LengthUnit: ['INCHES', 'FEET', 'YARDS', 'CENTIMETERS'],
-    WeightUnit: ['GRAM', 'KILOGRAM', 'POUND'],
-    VolumeUnit: ['MILLILITRE', 'LITRE', 'GALLON'],
-    TemperatureUnit: ['CELSIUS', 'FAHRENHEIT', 'KELVIN']
-  };
-
   return (
     <div className="app">
 
@@ -127,8 +171,8 @@ function App() {
 
             <div className="auth-left">
               <img src="/logo3.png" className="auth-logo" alt="QuantityMaster Logo" />
-              <h1>Quantity<span>Measurement</span></h1>
-              <p>Professional Measurement Tool</p>
+              <h1>Quantity<span>Master</span></h1>
+              <p>Professional Measurement Suite</p>
             </div>
 
             <div className="auth-right">
@@ -337,7 +381,7 @@ function App() {
                 </div>
               </div>
 
-              <div className="result">
+              <div className={`result ${result.toLowerCase().includes('error') ? 'error' : ''}`}>
                 <span className="result-label">Result</span>
                 <h1 className="result-value">{result}</h1>
               </div>

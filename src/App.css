@@ -1,3 +1,4 @@
+
 /* ========================================
    DESIGN TOKENS & ROOT VARIABLES
    ======================================== */
@@ -655,6 +656,13 @@ header {
   border: 2px solid var(--primary);
   text-align: center;
   box-shadow: 0 0 20px rgba(251, 191, 36, 0.15);
+  transition: all var(--transition-base);
+}
+
+.result.error {
+  border-color: #ef4444;
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(139, 0, 0, 0.05));
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.15);
 }
 
 .result-label {
@@ -675,6 +683,11 @@ header {
   color: var(--primary);
   letter-spacing: -1px;
   word-break: break-all;
+}
+
+.result.error .result-value {
+  color: #fca5a5;
+  font-size: 1.25rem;
 }
 
 /* ========================================
